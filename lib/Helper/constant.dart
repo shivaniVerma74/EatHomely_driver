@@ -1,4 +1,4 @@
-final String appName = 'Homely Delivery App';
+final String appName = 'Eat Homely Delivery App';
 
 final int timeOut = 50;
 const int perPage = 10;
@@ -88,8 +88,7 @@ const String BANK_DETAIL = 'Bank Details:\n' +
     'IFSC Code: 123XXX \n' +
     'Name: Abc xyz';
 const String FIELD_REQUIRED = 'This Field is Required';
-const String SEND_VERIFY_CODE_LBL =
-    "We will send a Verification Code to This Number";
+const String SEND_VERIFY_CODE_LBL = "We will send a Verification Code to This Number";
 const String SENT_VERIFY_CODE_TO_NO_LBL = "We have sent a verification code to";
 const String COUNTRY_CODE_LBL = "Select country code";
 const String PASS_SUCCESS_MSG = "Password Update Successfully! Please Login";
@@ -118,8 +117,7 @@ const String NO_INTERNET_DISC =
     "Please check your connection again, or connect to Wi-Fi";
 const String noItem = 'No Item Found..!!';
 const String TRY_AGAIN_INT_LBL = "Try Again";
-final String somethingMSg =
-    'Something went wrong. Please try again after some time';
+final String somethingMSg = 'Something went wrong. Please try again after some time';
 const String noNoti = 'No Notification Found..!!';
 
 final String baseUrl = "https://developmentalphawizz.com/eatoz_clone/delivery_boy/app/v1/api/";

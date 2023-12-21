@@ -746,11 +746,11 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                           .subtitle1!
                           .copyWith(color: white, fontWeight: FontWeight.bold),
                     ),
-                    Text("$WALLET_BAL: ${CUR_CURRENCY!}$CUR_BALANCE",
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(color: white)),
+                    // Text("$WALLET_BAL: ${CUR_CURRENCY!}$CUR_BALANCE",
+                    //     style: Theme.of(context)
+                    //         .textTheme
+                    //         .caption!
+                    //         .copyWith(color: white)),
                     Padding(
                         padding: const EdgeInsets.only(
                           top: 7,

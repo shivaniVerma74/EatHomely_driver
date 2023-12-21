@@ -49,7 +49,6 @@ class _CashCollectionState extends State<CashCollection> {
 
   TextEditingController amountController = TextEditingController();
 
-
   uploadMoney() async {
     DateTime dateTime = DateTime.now();
     print("checking date time here ${dateTime}");
@@ -59,7 +58,7 @@ class _CashCollectionState extends State<CashCollection> {
     var request = http.MultipartRequest(
         'POST', Uri.parse(baseUrl + 'manage_cash_collection'));
     request.fields.addAll({
-      'delivery_boy_id': '${CUR_USERID}',
+      'delivery_boy_id': '$CUR_USERID',
       'amount': amountController.text,
       'date': dateTime.toString(),
       'message': 'test'
@@ -89,7 +88,7 @@ class _CashCollectionState extends State<CashCollection> {
       'key': "rzp_test_CpvP0qcfS4CSJD",
       'amount': finalPrice.toStringAsFixed(0),
       'currency': 'INR',
-      'name': 'Eatoz',
+      'name': 'Homely',
       'description': '',
       // 'prefill': {'contact': userMobile, 'email': userEmail},
     };
