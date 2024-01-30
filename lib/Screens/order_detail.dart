@@ -339,20 +339,13 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                                   const EdgeInsets.symmetric(
                                                       vertical: 10.0,
                                                       horizontal: 10),
-                                              child: widget.model!.itemList![0]
-                                                              .status !=
-                                                          DELIVERD &&
-                                                      widget.model!.itemList![0]
-                                                              .status !=
-                                                          "cancelled"
+                                              child: widget.model!.itemList![0].status != DELIVERD &&
+                                                      widget.model!.itemList![0].status != "cancelled"
                                                   ? Row(
                                                       children: [
                                                         Expanded(
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 8.0),
+                                                            padding: const EdgeInsets.only(right: 8.0),
                                                             child:
                                                                 DropdownButtonFormField(
                                                               dropdownColor:
@@ -363,15 +356,9 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                                               //iconSize: 40,
                                                               hint: Text(
                                                                 "Update Status",
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .subtitle2!
-                                                                    .copyWith(
-                                                                        color:
-                                                                            fontColor,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
+                                                                style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                                                                        color: fontColor,
+                                                                        fontWeight: FontWeight.bold),
                                                               ),
                                                               decoration:
                                                                   const InputDecoration(
@@ -397,12 +384,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                                               onChanged: (dynamic
                                                                   newValue) {
                                                                 setState(() {
-                                                                  widget
-                                                                          .model!
-                                                                          .itemList![
-                                                                              0]
-                                                                          .curSelected =
-                                                                      newValue;
+                                                                  widget.model!.itemList![0].curSelected = newValue;
                                                                 });
                                                                 print('___________${newValue}__________');
                                                               },
@@ -412,8 +394,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                                                 return DropdownMenuItem<
                                                                     String>(
                                                                   value: st,
-                                                                  child: st ==
-                                                                          "shipped"
+                                                                  child: st == "shipped"
                                                                       ? Text(
                                                                           "Picked Up",
                                                                           style: Theme.of(context)
@@ -426,10 +407,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                                                               "Preparing",
                                                                               style: Theme.of(context).textTheme.subtitle2!.copyWith(color: fontColor, fontWeight: FontWeight.bold),
                                                                             )
-                                                                          : Text(
-                                                                              capitalize(st),
-                                                                              style: Theme.of(context).textTheme.subtitle2!.copyWith(color: fontColor, fontWeight: FontWeight.bold),
-                                                                            ),
+                                                                          : Text(capitalize(st), style: Theme.of(context).textTheme.subtitle2!.copyWith(color: fontColor, fontWeight: FontWeight.bold),),
                                                                 );
                                                               }).toList(),
                                                             ),
@@ -447,96 +425,46 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                                         //     ? SizedBox()
                                                         //     :
                                                         RawMaterialButton(
-                                                          constraints:
-                                                              const BoxConstraints
-                                                                      .expand(
-                                                                  width: 42,
-                                                                  height: 42),
+                                                          constraints: const BoxConstraints.expand(width: 42, height: 42),
                                                           onPressed: () {
-                                                            if (widget
-                                                                        .model!
-                                                                        .itemList![
-                                                                            0]
-                                                                        .item_otp !=
-                                                                    null &&
-                                                                widget
-                                                                    .model!
-                                                                    .itemList![
-                                                                        0]
-                                                                    .item_otp!
-                                                                    .isNotEmpty &&
-                                                                widget
-                                                                        .model!
-                                                                        .itemList![
-                                                                            0]
-                                                                        .item_otp !=
-                                                                    "0" &&
-                                                                widget
-                                                                        .model!
-                                                                        .itemList![
-                                                                            0]
-                                                                        .curSelected ==
-                                                                    DELIVERD) {
+                                                            if (widget.model!.itemList![0].item_otp != null &&
+                                                                widget.model!.itemList![0].item_otp!.isNotEmpty &&
+                                                                widget.model!.itemList![0].item_otp != "0" &&
+                                                                widget.model!.itemList![0].curSelected == DELIVERD) {
                                                               otpDialog(
-                                                                  widget
-                                                                      .model!
-                                                                      .itemList![
-                                                                          0]
-                                                                      .curSelected,
-                                                                  widget.model!
-                                                                      .otp,
-                                                                  model.id,
-                                                                  true,
-                                                                  0);
+                                                                  widget.model!.itemList![0].curSelected,
+                                                                  widget.model!.otp,
+                                                                  model.id, true, 0);
                                                             } else {
                                                               updateOrder(
-                                                                  widget
-                                                                      .model!
-                                                                      .itemList![
-                                                                          0]
-                                                                      .curSelected,
-                                                                  model.id,
-                                                                  true,
-                                                                  0,
-                                                                  widget
-                                                                      .model!
-                                                                      .itemList![
-                                                                          0]
-                                                                      .item_otp);
+                                                                  widget.model!.itemList![0].curSelected,
+                                                                  model.id, true, 0,
+                                                                  widget.model!.itemList![0].item_otp);
                                                             }
                                                           },
                                                           elevation: 2.0,
                                                           fillColor: fontColor,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 5),
+                                                          padding: const EdgeInsets.only(left: 5),
                                                           child: const Align(
-                                                            alignment: Alignment
-                                                                .center,
+                                                            alignment: Alignment.center,
                                                             child: Icon(
                                                               Icons.send,
                                                               size: 20,
                                                               color: white,
                                                             ),
                                                           ),
-                                                          shape:
-                                                              const CircleBorder(),
-                                                        )
+                                                          shape: const CircleBorder(),
+                                                        ),
                                                       ],
                                                     )
-                                                  : widget.model!.itemList![0]
-                                                              .status !=
-                                                          "cancelled"
+                                                  : widget.model!.itemList![0].status != "cancelled"
                                                       ? Text(
                                                           "DELIVERED",
-                                                          style: TextStyle(
-                                                              color: primary),
+                                                          style: TextStyle(color: primary),
                                                         )
                                                       : Text(
                                                           "CANCELLED",
-                                                          style: TextStyle(
-                                                              color: primary),
+                                                          style: TextStyle(color: primary),
                                                         ),
                                             )
                                       //     : Container(),
@@ -616,8 +544,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                         itemCount: model.addonList!.length,
                                         itemBuilder: (c,i){
                                       return ListTile(
-                                        leading: Container(
-                                              height: 50,
+                                        leading: Container(height: 50,
                                           width: 50,
                                           child: Image.network("${model.addonList![i].image}",fit: BoxFit.cover,),
                                         ),
@@ -1094,7 +1021,9 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                   Text(widget.model!.itemList![0].storeName ?? '', style: TextStyle(fontWeight: FontWeight.bold),),
-                  Text(widget.model!.itemList![0].sellerAddress ?? ''),
+                    Text(widget.model!.itemList![0].sellerMobileNumber ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(widget.model!.itemList![0].sellerAddress ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
+
 
                 ],),
               ),
@@ -1501,10 +1430,10 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
     var request = http.MultipartRequest(
         'POST', Uri.parse('${baseUrl}updat_order_status'));
     request.fields.addAll({
-      'order_id': '${id}',
-      'status': '${status}',
-      'delivery_boy_id': '${CUR_USERID}',
-      'otp': '${otp}'
+      'order_id': '$id',
+      'status': '$status',
+      'delivery_boy_id': '$CUR_USERID',
+      'otp': '$otp'
     });
     print(
         "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm ${request.fields} nad ${baseUrl}updat_order_status");
