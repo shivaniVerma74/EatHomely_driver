@@ -500,10 +500,10 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                                                       2,
                                                   alignment: Alignment.center,
                                                   child: Text(
-                                                    "COD Orders",
+                                                    "Pay After Delivery Orders",
                                                     style: TextStyle(
                                                         color: Colors.black,
-                                                        fontSize: 15,
+                                                        fontSize: 13,
                                                         fontWeight:
                                                             FontWeight.w500),
                                                   ),
@@ -531,7 +531,7 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                                           : orderList[index].itemList!.length >
                                                       0 &&
                                                   orderList[index].payMethod ==
-                                                      "COD"
+                                                      "Pay After Delivery"
                                               ? orderItem(index)
                                               : Center(child: Padding(
                                                 padding: EdgeInsets.only(top: 20),
@@ -1464,7 +1464,7 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                   MaterialPageRoute(
                       builder: (context) =>
                           OrderDetail(model: orderList[index])),
-                );
+                ).then((value) => getOrder());
                 setState(() {
                   /* _isLoading = true;
              total=0;

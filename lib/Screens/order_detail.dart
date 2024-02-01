@@ -41,7 +41,9 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
     // PLACED,
    // PROCESSED,
     SHIPED,
+    PAYMENT_COMPLETED,
     DELIVERD,
+
     //CANCLED,
    // RETURNED,
    // WAITING
@@ -76,6 +78,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
     for (int i = 0; i < widget.model!.itemList!.length; i++) {
       widget.model!.itemList![i].curSelected =
           widget.model!.itemList![i].status;
+      selectStatus = widget.model!.itemList![i].status;
     }
 
     if (widget.model!.payMethod == "Bank Transfer") {
@@ -1444,6 +1447,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
       final jsonResponse = json.decode(finalResult);
       setState(() {
         setSnackbar(jsonResponse['message']);
+        print("msg" +jsonResponse['message']);
         finalDeliver = true;
       });
     } else {

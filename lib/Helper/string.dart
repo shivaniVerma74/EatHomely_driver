@@ -182,6 +182,7 @@ const String PLACED = 'received';
 const String SHIPED = 'shipped';
 const String PROCESSED = 'processed';
 const String DELIVERD = 'delivered';
+const String PAYMENT_COMPLETED = 'payment_complete';
 const String CANCLED = 'cancelled';
 const String RETURNED = 'returned';
 const String ITEM_RETURN = 'Item Return';

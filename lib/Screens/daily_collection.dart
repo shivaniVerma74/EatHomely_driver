@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../Helper/Color.dart';
 import '../Helper/Session.dart';
+import '../Helper/color.dart';
 import '../Helper/string.dart';
 
 class DailyCollection extends StatefulWidget {
