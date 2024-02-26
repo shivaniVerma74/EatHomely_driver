@@ -32,6 +32,7 @@ class Order_Model {
       invoice,
       delDate,
       total_gst,
+      urgentDelivery,
       delTime,
       deliveryTime;
 
@@ -76,6 +77,7 @@ class Order_Model {
     this.delTime,
     this.deliveryBoyId,
     this.orderTime,
+    this.urgentDelivery,
     this.deliveryTime,
   });
 
@@ -143,6 +145,7 @@ class Order_Model {
       addonList: addList,
       itemList: itemList,
       listStatus: lStatus,
+      urgentDelivery: parsedJson['urgent_delivery'],
       listDate: lDate,
       activeStatus: parsedJson[ACTIVE_STATUS],
       otp: parsedJson[OTP],

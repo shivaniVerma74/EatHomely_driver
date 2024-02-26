@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:homely_driver/Helper/Session.dart';
 import 'package:homely_driver/Helper/app_btn.dart';
@@ -39,15 +40,15 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
   bool _isNetworkAvail = true;
   List<String> statusList = [
     // PLACED,
-   // PROCESSED,
+    // PROCESSED,
     SHIPED,
-    PAYMENT_COMPLETED,
     DELIVERD,
-
+    PAYMENT_COMPLETED,
     //CANCLED,
-   // RETURNED,
-   // WAITING
+    // RETURNED,
+    // WAITING
   ];
+
   bool? _isCancleable, _isReturnable, _isLoading = true;
   bool _isProgress = false;
   String? curStatus;
@@ -78,7 +79,6 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
     for (int i = 0; i < widget.model!.itemList!.length; i++) {
       widget.model!.itemList![i].curSelected =
           widget.model!.itemList![i].status;
-      selectStatus = widget.model!.itemList![i].status;
     }
 
     if (widget.model!.payMethod == "Bank Transfer") {
@@ -106,12 +106,12 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
       'Cookie': 'ci_session=34dc067cb9d80e809951cb087f1541369032055d'
     };
     var request =
-        http.MultipartRequest('POST', Uri.parse('${baseUrl}driver_selfie'));
+    http.MultipartRequest('POST', Uri.parse('${baseUrl}driver_selfie'));
     request.fields.addAll({'order_id': '${widget.model!.id}'});
     imageFile == null
         ? null
         : request.files.add(await http.MultipartFile.fromPath(
-            'selfie_driver', imageFile!.path.toString()));
+        'selfie_driver', imageFile!.path.toString()));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -179,7 +179,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
 
-    print('___________${widget.model?.itemList?[0].status}__________');
+    print('______statusss_____${widget.model?.itemList?[0].status}__________');
 
     Order_Model model = widget.model!;
     String? pDate, prDate, sDate, dDate, cDate, rDate;
@@ -237,528 +237,539 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
       appBar: getAppBar(ORDER_DETAIL, context),
       body: _isNetworkAvail
           ? Stack(
-              children: [
-                Column(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: controller,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Card(
-                                  elevation: 0,
-                                  child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "$ORDER_ID_LBL - ${model.id!}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle2!
-                                                    .copyWith(
-                                                        color: lightBlack2),
-                                              ),
-                                              Text(
-                                                model.orderDate!,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle2!
-                                                    .copyWith(
-                                                        color: lightBlack2),
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            "$PAYMENT_MTHD - ${model.payMethod!}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .copyWith(color: lightBlack2),
-                                          ),
-                                          Text(
-                                            "$ORDER_TIME - ${model.orderTime!}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .copyWith(color: lightBlack2),
-                                          ),
-                                          // model.deliveryTime != "" ? Text(
-                                          //   "Delivered Time - ${model.deliveryTime}",
-                                          //   style: Theme.of(context)
-                                          //       .textTheme
-                                          //       .subtitle2!
-                                          //       .copyWith(color: lightBlack2),
-                                          // ) : SizedBox(),
-                                        ],
-                                      ))),
-                              model.delDate != null && model.delDate!.isNotEmpty
-                                  ? Card(
-                                      elevation: 0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Text(
-                                          "$PREFER_DATE_TIME: ${model.delDate!} - ${model.delTime!}",
+          children: [
+          Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: controller,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Card(
+                            elevation: 0,
+                            child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "$ORDER_ID_LBL - ${model.id!}",
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle2!
-                                              .copyWith(color: lightBlack2),
+                                              .copyWith(
+                                              color: lightBlack2),
                                         ),
-                                      ))
-                                  : Container(),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Card(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.only(left: 5, right: 5),
-                                        child: Text(
-                                          "Update order status",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
+                                        Text(
+                                          model.orderDate!,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2!
+                                              .copyWith(
+                                              color: lightBlack2),
                                         ),
-                                      ),
-                                      widget.model!.itemList!.length >= 1
-                                          ? Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10.0,
-                                                      horizontal: 10),
-                                              child: widget.model!.itemList![0].status != DELIVERD &&
-                                                      widget.model!.itemList![0].status != "cancelled"
-                                                  ? Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(right: 8.0),
-                                                            child:
-                                                                DropdownButtonFormField(
-                                                              dropdownColor:
-                                                                  lightWhite,
-                                                              isDense: true,
-                                                              iconEnabledColor:
-                                                                  fontColor,
-                                                              //iconSize: 40,
-                                                              hint: Text(
-                                                                "Update Status",
-                                                                style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                                                                        color: fontColor,
-                                                                        fontWeight: FontWeight.bold),
-                                                              ),
-                                                              decoration:
-                                                                  const InputDecoration(
-                                                                filled: true,
-                                                                isDense: true,
-                                                                fillColor:
-                                                                    lightWhite,
-                                                                contentPadding:
-                                                                    EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            10,
-                                                                        horizontal:
-                                                                            10),
-                                                                enabledBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                          color:
-                                                                              fontColor),
-                                                                ),
-                                                              ),
-                                                              value: selectStatus,
-                                                              onChanged: (dynamic
-                                                                  newValue) {
-                                                                setState(() {
-                                                                  widget.model!.itemList![0].curSelected = newValue;
-                                                                });
-                                                                print('___________${newValue}__________');
-                                                              },
-                                                              items: statusList
-                                                                  .map((String
-                                                                      st) {
-                                                                return DropdownMenuItem<
-                                                                    String>(
-                                                                  value: st,
-                                                                  child: st == "shipped"
-                                                                      ? Text(
-                                                                          "Picked Up",
-                                                                          style: Theme.of(context)
-                                                                              .textTheme
-                                                                              .subtitle2!
-                                                                              .copyWith(color: fontColor, fontWeight: FontWeight.bold),
-                                                                        )
-                                                                      : st == "processed"
-                                                                          ? Text(
-                                                                              "Preparing",
-                                                                              style: Theme.of(context).textTheme.subtitle2!.copyWith(color: fontColor, fontWeight: FontWeight.bold),
-                                                                            )
-                                                                          : Text(capitalize(st), style: Theme.of(context).textTheme.subtitle2!.copyWith(color: fontColor, fontWeight: FontWeight.bold),),
-                                                                );
-                                                              }).toList(),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        // finalDeliver == true
-                                                        //     ? SizedBox()
-                                                        //     :
-                                                        // widget
-                                                        //             .model!
-                                                        //             .itemList![
-                                                        //                 0]
-                                                        //             .curSelected ==
-                                                        //         DELIVERD
-                                                        //     ? SizedBox()
-                                                        //     :
-                                                        RawMaterialButton(
-                                                          constraints: const BoxConstraints.expand(width: 42, height: 42),
-                                                          onPressed: () {
-                                                            if (widget.model!.itemList![0].item_otp != null &&
-                                                                widget.model!.itemList![0].item_otp!.isNotEmpty &&
-                                                                widget.model!.itemList![0].item_otp != "0" &&
-                                                                widget.model!.itemList![0].curSelected == DELIVERD) {
-                                                              otpDialog(
-                                                                  widget.model!.itemList![0].curSelected,
-                                                                  widget.model!.otp,
-                                                                  model.id, true, 0);
-                                                            } else {
-                                                              updateOrder(
-                                                                  widget.model!.itemList![0].curSelected,
-                                                                  model.id, true, 0,
-                                                                  widget.model!.itemList![0].item_otp);
-                                                            }
-                                                          },
-                                                          elevation: 2.0,
-                                                          fillColor: fontColor,
-                                                          padding: const EdgeInsets.only(left: 5),
-                                                          child: const Align(
-                                                            alignment: Alignment.center,
-                                                            child: Icon(
-                                                              Icons.send,
-                                                              size: 20,
-                                                              color: white,
-                                                            ),
-                                                          ),
-                                                          shape: const CircleBorder(),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  : widget.model!.itemList![0].status != "cancelled"
-                                                      ? Text(
-                                                          "DELIVERED",
-                                                          style: TextStyle(color: primary),
-                                                        )
-                                                      : Text(
-                                                          "CANCELLED",
-                                                          style: TextStyle(color: primary),
-                                                        ),
-                                            )
-                                      //     : Container(),
-                                      // widget.model!.itemList![0].curSelected ==
-                                      //             "delivered" ||
-                                      //         widget.model!.itemList![0]
-                                      //                 .curSelected ==
-                                      //             "Delivered"
-                                      //     ? imageFile == null
-                                      //         ? Padding(
-                                      //             padding:
-                                      //                 const EdgeInsets.only(
-                                      //                     left: 10, bottom: 5),
-                                      //             child: MaterialButton(
-                                      //               onPressed: () {
-                                      //                 _getFromGallery();
-                                      //               },
-                                      //               child: Text(
-                                      //                 "Upload Selfi",
-                                      //                 style: TextStyle(
-                                      //                     color: Colors.white),
-                                      //               ),
-                                      //               color: primary,
-                                      //             ),
-                                      //           )
-                                      //         : Row(
-                                      //             children: [
-                                      //               Container(
-                                      //                 height: 40,
-                                      //                 width: 50,
-                                      //                 child: Image.file(
-                                      //                     imageFile!),
-                                      //               ),
-                                      //               MaterialButton(
-                                      //                 onPressed: () {
-                                      //                   uploadSelfi();
-                                      //                 },
-                                      //                 child: Text(
-                                      //                   "Upload",
-                                      //                   style: TextStyle(
-                                      //                       color:
-                                      //                           Colors.white),
-                                      //                 ),
-                                      //                 color: primary,
-                                      //               )
-                                      //             ],
-                                      //           )
-                                          : SizedBox()
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: model.itemList!.length,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, i) {
-                                  OrderItem orderItem = model.itemList![i];
-                                  return productItem(orderItem, model, i);
-                                },
-                              ),
-                              /// addon section
-                         model.addonList?.isEmpty ?? true  ?  SizedBox() :  Container(
-                           color: Colors.white,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height:10),
-                                    Text("Addon Item"),
-                                    SizedBox(height: 10,),
-                                    ListView.separated(
-                                      separatorBuilder: (c,i){
-                                        return Divider();
-                                      },
-                                      shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: model.addonList!.length,
-                                        itemBuilder: (c,i){
-                                      return ListTile(
-                                        leading: Container(height: 50,
-                                          width: 50,
-                                          child: Image.network("${model.addonList![i].image}",fit: BoxFit.cover,),
-                                        ),
-                                        title: Text("${model.addonList![i].name}"),
-                                        subtitle: Text("\u{20B9} ${model.addonList![i].price}"),
-                                        trailing: Text("Qty ${model.addonList![i].quantity}"),
-                                      );
-                                    })
+                                      ],
+                                    ),
+                                    Text(
+                                      "$PAYMENT_MTHD - ${model.payMethod!}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(color: lightBlack2),
+                                    ),
+                                    Text(
+                                      "$ORDER_TIME - ${model.orderTime!}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(color: lightBlack2),
+                                    ),
+                                    Text(
+                                      "Delivery Type - ${model.urgentDelivery!}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(color: lightBlack2),
+                                    ),
+                                    // model.deliveryTime != "" ? Text(
+                                    //   "Delivered Time - ${model.deliveryTime}",
+                                    //   style: Theme.of(context)
+                                    //       .textTheme
+                                    //       .subtitle2!
+                                    //       .copyWith(color: lightBlack2),
+                                    // ) : SizedBox(),
                                   ],
                                 ),
+                            ),
+                        ),
+                        model.delDate != null && model.delDate!.isNotEmpty
+                            ? Card(
+                            elevation: 0,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                "$PREFER_DATE_TIME: ${model.delDate!} - ${model.delTime!}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2!
+                                    .copyWith(color: lightBlack2),
                               ),
-
-                              sellerDetails(),
-                              shippingDetails(),
-                              priceDetails(),
+                            ),
+                        ): Container(),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Padding(
+                                  padding:
+                                  EdgeInsets.only(left: 5, right: 5),
+                                  child: Text(
+                                    "Update order status",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                widget.model!.itemList!.length >= 1
+                                    ? Padding(
+                                  padding:
+                                  const EdgeInsets.symmetric(
+                                      vertical: 10.0,
+                                      horizontal: 10),
+                                  child: widget.model!.itemList![0].status == "payment_complete" ? Text("Payment Complete", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),):
+                                     widget.model!.itemList![0].status != DELIVERD &&
+                                      widget.model!.itemList![0].status != "cancelled"
+                                      ? Row(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(right: 8.0),
+                                          child:
+                                          DropdownButtonFormField(
+                                            dropdownColor:
+                                            lightWhite,
+                                            isDense: true,
+                                            iconEnabledColor:
+                                            fontColor,
+                                            //iconSize: 40,
+                                            hint: Text(
+                                              "Update Status",
+                                              style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                                                  color: fontColor,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            decoration:
+                                            const InputDecoration(
+                                              filled: true,
+                                              isDense: true,
+                                              fillColor:
+                                              lightWhite,
+                                              contentPadding:
+                                              EdgeInsets.symmetric(
+                                                  vertical:
+                                                  10,
+                                                  horizontal:
+                                                  10),
+                                              enabledBorder:
+                                              OutlineInputBorder(
+                                                borderSide:
+                                                BorderSide(
+                                                    color:
+                                                    fontColor),
+                                              ),
+                                            ),
+                                            value: selectStatus,
+                                            onChanged: (dynamic newValue) {
+                                              setState(() {
+                                                widget.model!.itemList![0].curSelected = newValue;
+                                              });
+                                              print('___________${newValue}__________');
+                                            },
+                                            items: statusList.map((String st) {
+                                              return DropdownMenuItem<String>(
+                                                value: st,
+                                                child: st == "shipped"
+                                                    ? Text(
+                                                  "Picked Up",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle2!
+                                                      .copyWith(color: fontColor, fontWeight: FontWeight.bold),
+                                                )
+                                                    : st == "processed"
+                                                    ? Text(
+                                                  "Preparing",
+                                                  style: Theme.of(context).textTheme.subtitle2!.copyWith(color: fontColor, fontWeight: FontWeight.bold),
+                                                )
+                                                    : Text(capitalize(st), style: Theme.of(context).textTheme.subtitle2!.copyWith(color: fontColor, fontWeight: FontWeight.bold),),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ),
+                                      // finalDeliver == true
+                                      //     ? SizedBox()
+                                      //     :
+                                      // widget
+                                      //             .model!
+                                      //             .itemList![
+                                      //                 0]
+                                      //             .curSelected ==
+                                      //         DELIVERD
+                                      //     ? SizedBox()
+                                      //     :
+                                      RawMaterialButton(
+                                        constraints: const BoxConstraints.expand(width: 42, height: 42),
+                                        onPressed: () {
+                                          if (widget.model!.itemList![0].item_otp != null &&
+                                              widget.model!.itemList![0].item_otp!.isNotEmpty &&
+                                              widget.model!.itemList![0].item_otp != "0" &&
+                                              widget.model!.itemList![0].curSelected == DELIVERD) {
+                                            otpDialog(
+                                                widget.model!.itemList![0].curSelected,
+                                                widget.model!.otp,
+                                                model.id, true, 0);
+                                          }
+                                           else {
+                                            if(widget.model!.itemList![0].curSelected?.toLowerCase() == widget.model!.itemList![0].status?.toLowerCase()) {
+                                              Fluttertoast.showToast(msg: 'choose different status');
+                                            }
+                                          else {
+                                          updateOrder(
+                                          widget.model!.itemList![0].curSelected,
+                                          model.id, true, 0,
+                                          widget.model!.itemList![0].item_otp);
+                                              }
+                                           }
+                                        },
+                                        elevation: 2.0,
+                                        fillColor: fontColor,
+                                        padding: const EdgeInsets.only(left: 5),
+                                        child: const Align(
+                                          alignment: Alignment.center,
+                                          child: Icon(
+                                            Icons.send,
+                                            size: 20,
+                                            color: white,
+                                          ),
+                                        ),
+                                        shape: const CircleBorder(),
+                                          ),
+                                        ],
+                                      )
+                                      : widget.model!.itemList![0].status != "cancelled"
+                                      ? Text(
+                                    "DELIVERED",
+                                    style: TextStyle(color: primary),
+                                    )
+                                      : Text(
+                                    "CANCELLED",
+                                    style: TextStyle(color: primary),
+                                  ),
+                                )
+                                //     : Container(),
+                                // widget.model!.itemList![0].curSelected ==
+                                //             "delivered" ||
+                                //         widget.model!.itemList![0]
+                                //                 .curSelected ==
+                                //             "Delivered"
+                                //     ? imageFile == null
+                                //         ? Padding(
+                                //             padding:
+                                //                 const EdgeInsets.only(
+                                //                     left: 10, bottom: 5),
+                                //             child: MaterialButton(
+                                //               onPressed: () {
+                                //                 _getFromGallery();
+                                //               },
+                                //               child: Text(
+                                //                 "Upload Selfi",
+                                //                 style: TextStyle(
+                                //                     color: Colors.white),
+                                //               ),
+                                //               color: primary,
+                                //             ),
+                                //           )
+                                //         : Row(
+                                //             children: [
+                                //               Container(
+                                //                 height: 40,
+                                //                 width: 50,
+                                //                 child: Image.file(
+                                //                     imageFile!),
+                                //               ),
+                                //               MaterialButton(
+                                //                 onPressed: () {
+                                //                   uploadSelfi();
+                                //                 },
+                                //                 child: Text(
+                                //                   "Upload",
+                                //                   style: TextStyle(
+                                //                       color:
+                                //                           Colors.white),
+                                //                 ),
+                                //                 color: primary,
+                                //               )
+                                //             ],
+                                //           )
+                                    : SizedBox()
+                              ],
+                            ),
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: model.itemList!.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, i) {
+                            OrderItem orderItem = model.itemList![i];
+                            return productItem(orderItem, model, i);
+                          },
+                        ),
+                        /// addon section
+                        model.addonList?.isEmpty ?? true  ?  SizedBox() :  Container(
+                          color: Colors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height:10),
+                              Text("Addon Item"),
+                              SizedBox(height: 10,),
+                              ListView.separated(
+                                  separatorBuilder: (c,i){
+                                    return Divider();
+                                  },
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: model.addonList!.length,
+                                  itemBuilder: (c,i){
+                                    return ListTile(
+                                      leading: Container(height: 50,
+                                        width: 50,
+                                        child: Image.network("${model.addonList![i].image}",fit: BoxFit.cover,),
+                                      ),
+                                      title: Text("${model.addonList![i].name}"),
+                                      subtitle: Text("\u{20B9} ${model.addonList![i].price}"),
+                                      trailing: Text("Qty ${model.addonList![i].quantity}"),
+                                    );
+                                  })
                             ],
                           ),
                         ),
-                      ),
+
+                        sellerDetails(),
+                        shippingDetails(),
+                        priceDetails(),
+                      ],
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(10.0),
-                    //   child: Row(
-                    //     children: [
-                    //       Expanded(
-                    //         child: Padding(
-                    //           padding: const EdgeInsets.only(right: 8.0),
-                    //           child: DropdownButtonFormField(
-                    //             dropdownColor: lightWhite,
-                    //             isDense: true,
-                    //             iconEnabledColor: fontColor,
-                    //
-                    //             hint: new Text(
-                    //               "Update Status",
-                    //               style: Theme.of(this.context)
-                    //                   .textTheme
-                    //                   .subtitle2!
-                    //                   .copyWith(
-                    //                       color: fontColor,
-                    //                       fontWeight: FontWeight.bold),
-                    //             ),
-                    //            decoration: InputDecoration(
-                    //               filled: true,
-                    //               isDense: true,
-                    //               fillColor: lightWhite,
-                    //               contentPadding: EdgeInsets.symmetric(
-                    //                   vertical: 10, horizontal: 10),
-                    //               enabledBorder: OutlineInputBorder(
-                    //                 borderSide: BorderSide(color: fontColor),
-                    //               ),
-                    //             ),
-                    //             value: widget.model!.activeStatus,
-                    //             onChanged: (dynamic newValue) {
-                    //               setState(() {
-                    //                 curStatus = newValue;
-                    //               });
-                    //             },
-                    //             items: statusList.map((String st) {
-                    //               return DropdownMenuItem<String>(
-                    //                 value: st,
-                    //                 child: Text(
-                    //                   capitalize(st),
-                    //                   style: Theme.of(this.context)
-                    //                       .textTheme
-                    //                       .subtitle2!
-                    //                       .copyWith(
-                    //                           color: fontColor,
-                    //                           fontWeight: FontWeight.bold),
-                    //                 ),
-                    //               );
-                    //             }).toList(),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       RawMaterialButton(
-                    //         constraints:
-                    //             BoxConstraints.expand(width: 42, height: 42),
-                    //         onPressed: () {
-                    //           if (model.otp != null &&
-                    //               model.otp!.isNotEmpty &&
-                    //               model.otp != "0" &&
-                    //               curStatus == DELIVERD)
-                    //             otpDialog(
-                    //                 curStatus, model.otp, model.id, false, 0);
-                    //           else
-                    //             updateOrder(curStatus, updateOrderApi, model.id,
-                    //                 false, 0);
-                    //         },
-                    //         elevation: 2.0,
-                    //         fillColor: fontColor,
-                    //         padding: EdgeInsets.only(left: 5),
-                    //         child: Align(
-                    //           alignment: Alignment.center,
-                    //           child: Icon(
-                    //             Icons.send,
-                    //             size: 20,
-                    //             color: white,
-                    //           ),
-                    //         ),
-                    //         shape: CircleBorder(),
-                    //       )
-                    //     ],
-                    //   ),
-                    // )
-                  ],
+                  ),
                 ),
-                showCircularProgress(_isProgress, primary),
-              ],
-            )
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(10.0),
+              //   child: Row(
+              //     children: [
+              //       Expanded(
+              //         child: Padding(
+              //           padding: const EdgeInsets.only(right: 8.0),
+              //           child: DropdownButtonFormField(
+              //             dropdownColor: lightWhite,
+              //             isDense: true,
+              //             iconEnabledColor: fontColor,
+              //
+              //             hint: new Text(
+              //               "Update Status",
+              //               style: Theme.of(this.context)
+              //                   .textTheme
+              //                   .subtitle2!
+              //                   .copyWith(
+              //                       color: fontColor,
+              //                       fontWeight: FontWeight.bold),
+              //             ),
+              //            decoration: InputDecoration(
+              //               filled: true,
+              //               isDense: true,
+              //               fillColor: lightWhite,
+              //               contentPadding: EdgeInsets.symmetric(
+              //                   vertical: 10, horizontal: 10),
+              //               enabledBorder: OutlineInputBorder(
+              //                 borderSide: BorderSide(color: fontColor),
+              //               ),
+              //             ),
+              //             value: widget.model!.activeStatus,
+              //             onChanged: (dynamic newValue) {
+              //               setState(() {
+              //                 curStatus = newValue;
+              //               });
+              //             },
+              //             items: statusList.map((String st) {
+              //               return DropdownMenuItem<String>(
+              //                 value: st,
+              //                 child: Text(
+              //                   capitalize(st),
+              //                   style: Theme.of(this.context)
+              //                       .textTheme
+              //                       .subtitle2!
+              //                       .copyWith(
+              //                           color: fontColor,
+              //                           fontWeight: FontWeight.bold),
+              //                 ),
+              //               );
+              //             }).toList(),
+              //           ),
+              //         ),
+              //       ),
+              //       RawMaterialButton(
+              //         constraints:
+              //             BoxConstraints.expand(width: 42, height: 42),
+              //         onPressed: () {
+              //           if (model.otp != null &&
+              //               model.otp!.isNotEmpty &&
+              //               model.otp != "0" &&
+              //               curStatus == DELIVERD)
+              //             otpDialog(
+              //                 curStatus, model.otp, model.id, false, 0);
+              //           else
+              //             updateOrder(curStatus, updateOrderApi, model.id,
+              //                 false, 0);
+              //         },
+              //         elevation: 2.0,
+              //         fillColor: fontColor,
+              //         padding: EdgeInsets.only(left: 5),
+              //         child: Align(
+              //           alignment: Alignment.center,
+              //           child: Icon(
+              //             Icons.send,
+              //             size: 20,
+              //             color: white,
+              //           ),
+              //         ),
+              //         shape: CircleBorder(),
+              //       )
+              //     ],
+              //   ),
+              // )
+            ],
+          ),
+          showCircularProgress(_isProgress, primary),
+        ],
+      )
           : noInternet(context),
     );
   }
 
-  otpDialog(String? curSelected, String? otp, String? id, bool item,
-      int index) async {
+  otpDialog(String? curSelected, String? otp, String? id, bool item, int index) async {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setStater) {
                 print('___________${otp}_____fdffd_____');
-            return AlertDialog(
-              contentPadding: const EdgeInsets.all(0.0),
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              content: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                            padding:
+                return AlertDialog(
+                  contentPadding: const EdgeInsets.all(0.0),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  content: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                                padding:
                                 const EdgeInsets.fromLTRB(20.0, 20.0, 0, 2.0),
-                            child: Text(
-                              OTP_LBL,
-                              style: Theme.of(this.context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .copyWith(color: fontColor),
-                            )),
-                        const Divider(color: lightBlack),
-                        Form(
-                            key: _formkey,
-                            child: Column(
-                              children: <Widget>[
-                                Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20.0, 0, 20.0, 0),
-                                    child: TextFormField(
-                                      keyboardType: TextInputType.number,
-                                      validator: (String? value) {
-                                        if (value!.isEmpty) {
-                                          return FIELD_REQUIRED;
-                                        } else if (value.trim() != otp) {
-                                          return OTPERROR;
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                      autovalidateMode:
+                                child: Text(
+                                  OTP_LBL,
+                                  style: Theme.of(this.context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .copyWith(color: fontColor),
+                                )),
+                            const Divider(color: lightBlack),
+                            Form(
+                                key: _formkey,
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20.0, 0, 20.0, 0),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          validator: (String? value) {
+                                            if (value!.isEmpty) {
+                                              return FIELD_REQUIRED;
+                                            } else if (value.trim() != otp) {
+                                              return OTPERROR;
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                          autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      decoration: InputDecoration(
-                                        hintText: OTP_ENTER,
-                                        hintStyle: Theme.of(this.context)
-                                            .textTheme
-                                            .subtitle1!
-                                            .copyWith(
+                                          decoration: InputDecoration(
+                                            hintText: OTP_ENTER,
+                                            hintStyle: Theme.of(this.context)
+                                                .textTheme
+                                                .subtitle1!
+                                                .copyWith(
                                                 color: lightBlack,
                                                 fontWeight: FontWeight.normal),
-                                      ),
-                                      controller: otpC,
-                                    )),
-                              ],
-                            ))
-                      ])),
-              actions: <Widget>[
-                TextButton(
-                    child: Text(
-                      CANCEL,
-                      style: Theme.of(this.context)
-                          .textTheme
-                          .subtitle2!
-                          .copyWith(
+                                          ),
+                                          controller: otpC,
+                                        )),
+                                  ],
+                                ))
+                          ])),
+                  actions: <Widget>[
+                    TextButton(
+                        child: Text(
+                          CANCEL,
+                          style: Theme.of(this.context)
+                              .textTheme
+                              .subtitle2!
+                              .copyWith(
                               color: lightBlack, fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
-                TextButton(
-                    child: Text(
-                      SEND_LBL,
-                      style: Theme.of(this.context)
-                          .textTheme
-                          .subtitle2!
-                          .copyWith(
-                              color: fontColor, fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      final form = _formkey.currentState!;
-                      if (form.validate()) {
-                        form.save();
-                        setState(() {
+                        ),
+                        onPressed: () {
                           Navigator.pop(context);
-                        });
-                        updateOrder(curSelected, id, item, index, otp);
-                      }
-                    })
-              ],
-            );
-          });
+                        }),
+                    TextButton(
+                        child: Text(
+                          SEND_LBL,
+                          style: Theme.of(this.context)
+                              .textTheme
+                              .subtitle2!
+                              .copyWith(
+                              color: fontColor, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          final form = _formkey.currentState!;
+                          if (form.validate()) {
+                            form.save();
+                            setState(() {
+                              Navigator.pop(context);
+                            });
+                            updateOrder(curSelected, id, item, index, otp);
+                          }
+                        })
+                  ],
+                );
+              });
         });
   }
 
@@ -767,10 +778,10 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
 
     if (Platform.isAndroid) {
       url =
-          "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving&dir_action=navigate";
+      "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving&dir_action=navigate";
     } else {
       url =
-          "http://maps.apple.com/?saddr=&daddr=$lat,$lng&directionsmode=driving&dir_action=navigate";
+      "http://maps.apple.com/?saddr=&daddr=$lat,$lng&directionsmode=driving&dir_action=navigate";
     }
     await launch(url);
 /*    if (await canLaunch(url)) {
@@ -786,7 +797,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
         child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                   padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                   child: Text("Bill Detail",
@@ -888,7 +899,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 15.0, right: 15.0, top: 5.0),
+                const EdgeInsets.only(left: 15.0, right: 15.0, top: 5.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -905,12 +916,12 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
   }
 
   Widget shippingDetails() {
-    return Card( 
+    return Card(
         elevation: 0,
         child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                   padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                   child: Row(
@@ -921,23 +932,23 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                               .textTheme
                               .subtitle2!
                               .copyWith(
-                                  color: fontColor,
-                                  fontWeight: FontWeight.bold)),
+                              color: fontColor,
+                              fontWeight: FontWeight.bold)),
                       const Spacer(),
                       widget.model!.latitude != "" &&
-                              widget.model!.longitude != ""
+                          widget.model!.longitude != ""
                           ? Container(
-                              height: 30,
-                              child: IconButton(
-                                  icon: const Icon(
-                                    Icons.location_on,
-                                    color: fontColor,
-                                  ),
-                                  onPressed: () {
-                                    _launchMap(widget.model!.latitude,
-                                        widget.model!.longitude);
-                                  }),
-                            )
+                        height: 30,
+                        child: IconButton(
+                            icon: const Icon(
+                              Icons.location_on,
+                              color: fontColor,
+                            ),
+                            onPressed: () {
+                              _launchMap(widget.model!.latitude,
+                                  widget.model!.longitude);
+                            }),
+                      )
                           : Container()
                     ],
                   )),
@@ -953,10 +964,10 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                   )),
               Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3),
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3),
                   child: Text(capitalize(widget.model!.address!),
                       style: const TextStyle(color: lightBlack2))),
-                  widget.model?.itemList?[0].status == 'delivered' ? SizedBox(): InkWell(
+              widget.model?.itemList?[0].status == 'delivered' ? SizedBox(): InkWell(
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15.0, vertical: 5),
@@ -985,7 +996,8 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
         child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                   padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                   child: Row(
@@ -996,39 +1008,38 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                               .textTheme
                               .subtitle2!
                               .copyWith(
-                                  color: fontColor,
-                                  fontWeight: FontWeight.bold)),
+                              color: fontColor,
+                              fontWeight: FontWeight.bold),
+                      ),
                       const Spacer(),
-                      widget.model!.itemList![0].storeLatitude != "" &&
-                              widget.model!.itemList![0].storeLongitude != ""
-                          ? Container(
-                              height: 30,
-                              child: IconButton(
-                                  icon: const Icon(
-                                    Icons.location_on,
-                                    color: fontColor,
-                                  ),
-                                  onPressed: () {
-                                    _launchMap(
-                                        widget
-                                            .model!.itemList![0].storeLatitude,
-                                        widget.model!.itemList![0]
-                                            .storeLongitude);
-                                  }),
-                            )
-                          : Container(),
+                      widget.model!.itemList![0].storeLatitude != "" && widget.model!.itemList![0].storeLongitude != "" ?
+                      Container(
+                        height: 30,
+                        child: IconButton(
+                            icon: const Icon(
+                              Icons.location_on,
+                              color: fontColor,
+                            ),
+                            onPressed: () {
+                              _launchMap(
+                                  widget
+                                      .model!.itemList![0].storeLatitude,
+                                  widget.model!.itemList![0]
+                                      .storeLongitude);
+                            }),
+                      ): Container(),
                     ],
-                  )),
+                  ),
+              ),
               Padding( padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Text(widget.model!.itemList![0].storeName ?? '', style: TextStyle(fontWeight: FontWeight.bold),),
+                    Text(widget.model!.itemList![0].storeName ?? '', style: TextStyle(fontWeight: FontWeight.bold),),
                     Text(widget.model!.itemList![0].sellerMobileNumber ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text(widget.model!.itemList![0].sellerAddress ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
-
-
-                ],),
+                    Text(widget.model!.itemList![0].sellerAddress ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
               ),
               const Divider(
                 color: lightBlack,
@@ -1094,7 +1105,9 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
               //     ))
               //   ],
               // ),
-            ])));
+            ]),
+        ),
+    );
   }
 
   Widget productItem(OrderItem orderItem, Order_Model model, int i) {
@@ -1133,42 +1146,42 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                   .textTheme
                                   .subtitle1!
                                   .copyWith(
-                                      color: lightBlack,
-                                      fontWeight: FontWeight.normal),
+                                  color: lightBlack,
+                                  fontWeight: FontWeight.normal),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             orderItem.attr_name!.isNotEmpty
                                 ? ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: att.length,
-                                    itemBuilder: (context, index) {
-                                      return Row(children: [
-                                        Flexible(
-                                          child: Text(
-                                            att[index].trim() + ":",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .copyWith(color: lightBlack2),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 5.0),
-                                          child: Text(
-                                            val[index],
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .copyWith(color: lightBlack),
-                                          ),
-                                        )
-                                      ]);
-                                    })
+                                physics:
+                                const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: att.length,
+                                itemBuilder: (context, index) {
+                                  return Row(children: [
+                                    Flexible(
+                                      child: Text(
+                                        att[index].trim() + ":",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2!
+                                            .copyWith(color: lightBlack2),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.only(left: 5.0),
+                                      child: Text(
+                                        val[index],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2!
+                                            .copyWith(color: lightBlack),
+                                      ),
+                                    )
+                                  ]);
+                                })
                                 : Container(),
                             Row(children: [
                               Text(
@@ -1395,32 +1408,32 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                     )
                   ],
                 ),
-               // orderItem.addonList == null ? SizedBox.shrink() :   SizedBox(height: 10,),
-              //   orderItem.addonList?.isEmpty ?? true  ? SizedBox.shrink() :  Align(
-              //     alignment: Alignment.topLeft,
-              //     child: Text("Add-on")),
-              // SizedBox(height: 10,),
-              // orderItem.addonList == null ? SizedBox.shrink() : Container(
-              //    child: ListView.separated(
-              //      separatorBuilder: (c,i){
-              //        return Divider();
-              //      },
-              //        shrinkWrap: true,
-              //        itemCount: orderItem.addonList!.length,
-              //        physics: NeverScrollableScrollPhysics(),
-              //        itemBuilder: (context,i){
-              //          return ListTile(
-              //            leading: Container(
-              //              height: 55,
-              //              width: 55,
-              //              child: Image.network("${orderItem.addonList![i].image}",fit: BoxFit.fill,),
-              //            ),
-              //            title: Text("${orderItem.addonList![i].name}"),
-              //            subtitle: Text("\u{20B9} ${orderItem.addonList![i].price}"),
-              //            trailing: Text("Qty ${orderItem.addonList![i].quantity}"),
-              //          );
-              //        }),
-              //  ),
+                // orderItem.addonList == null ? SizedBox.shrink() :   SizedBox(height: 10,),
+                //   orderItem.addonList?.isEmpty ?? true  ? SizedBox.shrink() :  Align(
+                //     alignment: Alignment.topLeft,
+                //     child: Text("Add-on")),
+                // SizedBox(height: 10,),
+                // orderItem.addonList == null ? SizedBox.shrink() : Container(
+                //    child: ListView.separated(
+                //      separatorBuilder: (c,i){
+                //        return Divider();
+                //      },
+                //        shrinkWrap: true,
+                //        itemCount: orderItem.addonList!.length,
+                //        physics: NeverScrollableScrollPhysics(),
+                //        itemBuilder: (context,i){
+                //          return ListTile(
+                //            leading: Container(
+                //              height: 55,
+                //              width: 55,
+                //              child: Image.network("${orderItem.addonList![i].image}",fit: BoxFit.fill,),
+                //            ),
+                //            title: Text("${orderItem.addonList![i].name}"),
+                //            subtitle: Text("\u{20B9} ${orderItem.addonList![i].price}"),
+                //            trailing: Text("Qty ${orderItem.addonList![i].quantity}"),
+                //          );
+                //        }),
+                //  ),
               ],
             )));
   }
@@ -1439,7 +1452,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
       'otp': '$otp'
     });
     print(
-        "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm ${request.fields} nad ${baseUrl}updat_order_status");
+        "mmmmmmmmmmmmm ${request.fields} nad ${baseUrl}updat_order_status");
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -1447,7 +1460,6 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
       final jsonResponse = json.decode(finalResult);
       setState(() {
         setSnackbar(jsonResponse['message']);
-        print("msg" +jsonResponse['message']);
         finalDeliver = true;
       });
     } else {

@@ -79,8 +79,8 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
   var picker = ImagePicker();
   Future pickImage() async {
     try {
-      final image =
-          await picker.pickImage(source: ImageSource.camera, maxHeight: 480,maxWidth: 480);
+      final image = await picker.pickImage(
+          source: ImageSource.camera, maxHeight: 480, maxWidth: 480);
       if (image == null) return;
       setState(() {
         imageValue = image;
@@ -128,7 +128,11 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
         // loc.lng = position.longitude.toString();
         // loc.lat = position.latitude.toString();
         // callApi();
-        setLatLongApi(lat: latitude.toString(), long: longitude.toString(),city: placemark[0].locality.toString(), address:  currentAdress  );
+        setLatLongApi(
+            lat: latitude.toString(),
+            long: longitude.toString(),
+            city: placemark[0].locality.toString(),
+            address: currentAdress);
       });
     }
   }
@@ -137,14 +141,12 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
     var headers = {
       'Cookie': 'ci_session=e473a8f272bc3c7f7b7ee0134640fccc71106ebb'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}driver_selfie_daily'));
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('${baseUrl}driver_selfie_daily'));
 
-    request.fields.addAll({
-    'driver_id': CUR_USERID ?? ''
-    });
+    request.fields.addAll({'driver_id': CUR_USERID ?? ''});
 
-
-    if(imageValue!= null) {
+    if (imageValue != null) {
       request.files.add(await http.MultipartFile.fromPath(
           'selfie_driver', imageValue?.path ?? ''));
     }
@@ -157,7 +159,7 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
       print('___________${finalResponse}__________');
       final jsonResponse = json.decode(finalResponse);
       setState(() {});
-     getUserDetail();
+      getUserDetail();
       setSnackbar("${jsonResponse['message']}");
       _refresh();
     } else {
@@ -185,8 +187,8 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
     final pushNotificationService = PushNotificationService(context: context);
     pushNotificationService.initialise();
 
-    buttonController = AnimationController(
-        duration: Duration(seconds: 30), vsync: this);
+    buttonController =
+        AnimationController(duration: Duration(seconds: 30), vsync: this);
 
     buttonSqueezeanimation = Tween(
       begin: deviceWidth! * 0.7,
@@ -201,7 +203,7 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
     controller.addListener(_scrollListener);
 
     super.initState();
-   timer = Timer.periodic(Duration(minutes: 5), (Timer t) => _refresh());
+    timer = Timer.periodic(Duration(minutes: 5), (Timer t) => _refresh());
   }
 
   logoutButton() async {
@@ -229,9 +231,9 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
     var request = http.MultipartRequest(
         'POST', Uri.parse('${baseUrl}accept_reject_order'));
     request.fields.addAll({
-      'accept_reject': '${status}',
-      'order_id': '${orderId}',
-      'delivery_boy_id': '${CUR_USERID}'
+      'accept_reject': '$status',
+      'order_id': '$orderId',
+      'delivery_boy_id': '$CUR_USERID'
     });
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
@@ -274,292 +276,284 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: lightWhite,
-      appBar: AppBar(
-        title: Text(
-          appName,
-          style: TextStyle(
-            color: grad2Color,
+        key: _scaffoldKey,
+        backgroundColor: lightWhite,
+        appBar: AppBar(
+          title: Text(
+            appName,
+            style: TextStyle(
+              color: grad2Color,
+            ),
           ),
+          iconTheme: IconThemeData(color: grad2Color),
+          backgroundColor: white,
+          actions: [
+            InkWell(
+                onTap: filterDialog,
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.filter_alt_outlined,
+                      color: primary,
+                    )))
+          ],
         ),
-        iconTheme: IconThemeData(color: grad2Color),
-        backgroundColor: white,
-        actions: [
-          InkWell(
-              onTap: filterDialog,
-              child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.filter_alt_outlined,
-                    color: primary,
-                  )))
-        ],
-      ),
-      drawer: _getDrawer(),
-      body:
-      // _isNetworkAvail
-      //     ? _isLoading
-      //         ? shimmer()
-      //         :
-      RefreshIndicator(
-                  key: _refreshIndicatorKey,
-                  onRefresh: _refresh,
-                  child: SingleChildScrollView(
-                      controller: controller,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    getCurrentLoc();
-                                    // _getLocation();
-                                  },
-                                  child: Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    height: 40,
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(9),
-                                        color: Colors.white),
-                                    child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+        drawer: _getDrawer(),
+        body:
+            // _isNetworkAvail
+            //     ? _isLoading
+            //         ? shimmer()
+            //         :
+            RefreshIndicator(
+                key: _refreshIndicatorKey,
+                onRefresh: _refresh,
+                child: SingleChildScrollView(
+                    controller: controller,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  getCurrentLoc();
+                                  // _getLocation();
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  height: 40,
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9),
+                                      color: Colors.white),
+                                  child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.my_location_rounded,
+                                          size: 15,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          currentAdress == null
+                                              ? "Loading address.."
+                                              : "${currentAdress}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      ]),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              onOf
+                                  ? Container(
+                                      width:
+                                          MediaQuery.of(context).size.width / 1,
+                                      color: Colors.green,
+                                      child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Icon(
-                                            Icons.my_location_rounded,
-                                            size: 15,
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Online",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ],
+                                      ))
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.5,
+                                            color: Colors.red,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    "Offline",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
+                                        InkWell(
+                                          onTap: () {
+                                            pickImage();
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.green),
+                                            height: 35,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.5,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "Upload Attendence",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 15),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              _detailHeader(),
+                              _detailHeader2(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              orderList.isEmpty
+                                  ? isLoadingItems
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : const Center(child: Text(noItem))
+                                  : Container(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                getOrder();
+                                                setState(() {
+                                                  isCod = false;
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    border: Border.all(
+                                                        color: isCod == false
+                                                            ? primary
+                                                            : Colors
+                                                                .transparent)),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2,
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  "All Orders",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          Text(
-                                            currentAdress == null
-                                                ? "Loading address.."
-                                                : "${currentAdress}",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                        ]),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                onOf
-                                    ? Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                1,
-                                        color: Colors.green,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                "Online",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ],
-                                        ))
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  2.5,
-                                              color: Colors.red,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      "Offline",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
-                                          InkWell(
-                                            onTap: () {
-                                              pickImage();
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.green),
-                                              height: 35,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  2.5,
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "Upload Attendence",
-                                                style: TextStyle(
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                getOrder();
+                                                setState(() {
+                                                  isCod = true;
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 40,
+                                                decoration: BoxDecoration(
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 15),
+                                                    border: Border.all(
+                                                        color: isCod == true
+                                                            ? primary
+                                                            : Colors
+                                                                .transparent)),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2,
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  "Pay After Delivery Orders",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                _detailHeader(),
-                                _detailHeader2(),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                orderList.isEmpty
-                                    ? isLoadingItems
-                                        ? const Center(
-                                            child: CircularProgressIndicator())
-                                        : const Center(child: Text(noItem))
-                                    : Container(
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: () {
-                                                  getOrder();
-                                                  setState(() {
-                                                    isCod = false;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      border: Border.all(
-                                                          color: isCod == false
-                                                              ? primary
-                                                              : Colors
-                                                                  .transparent)),
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2,
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    "All Orders",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: () {
-                                                  getOrder();
-                                                  setState(() {
-                                                    isCod = true;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      border: Border.all(
-                                                          color: isCod == true
-                                                              ? primary
-                                                              : Colors
-                                                                  .transparent)),
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2,
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    "Pay After Delivery Orders",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 13,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: (offset! < total!)
-                                      ? orderList.length + 1
-                                      : orderList.length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-
-                                    if (isCod == true) {
-
-                                      return (index == orderList.length &&
-                                              isLoadingmore)
-                                          ? const Center(
-                                              child:
-                                                  CircularProgressIndicator())
-                                          : orderList[index].itemList!.length >
-                                                      0 &&
-                                                  orderList[index].payMethod ==
-                                                      "Pay After Delivery"
-                                              ? orderItem(index)
-                                              : Center(child: Padding(
-                                                padding: EdgeInsets.only(top: 20),
-                                                child: SizedBox.shrink()
-                                              ),);
-                                    } else {
-                                      (index == orderList.length &&
-                                              isLoadingmore)
-                                          ? const Center(
-                                              child:
-                                                  CircularProgressIndicator())
-                                          : orderList[index].itemList!.length >
-                                                  0
-                                              ? orderItem(index)
-                                              : SizedBox();
-                                    }
+                                    ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: (offset! < total!)
+                                    ? orderList.length + 1
+                                    : orderList.length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  if (isCod == true) {
                                     return (index == orderList.length &&
                                             isLoadingmore)
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : orderList[index].itemList!.length >
+                                                    0 &&
+                                                orderList[index].payMethod ==
+                                                    "Pay After Delivery"
+                                            ? orderItem(index)
+                                            : Center(
+                                                child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: 20),
+                                                    child: SizedBox.shrink()),
+                                              );
+                                  } else {
+                                    (index == orderList.length && isLoadingmore)
                                         ? const Center(
                                             child: CircularProgressIndicator())
                                         : orderList[index].itemList!.length > 0
                                             ? orderItem(index)
                                             : SizedBox();
-                                  },
-                                )
-                              ]))))
-          // : noInternet(context),
-    );
+                                  }
+                                  return (index == orderList.length &&
+                                          isLoadingmore)
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : orderList[index].itemList!.length > 0
+                                          ? orderItem(index)
+                                          : SizedBox();
+                                },
+                              )
+                            ]))))
+        // : noInternet(context),
+        );
   }
 
   void filterDialog() {
@@ -1044,7 +1038,7 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
           if (activeStatus == awaitingPayment) activeStatus = "awaiting";
           parameter[ACTIVE_STATUS] = activeStatus;
         }
-        print("working here now ${getOrdersApi} and ${parameter}");
+        print("working here now $getOrdersApi and $parameter");
         Response response =
             await post(getOrdersApi, body: parameter, headers: headers)
                 .timeout(Duration(seconds: timeOut));
@@ -1195,14 +1189,20 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
     }
   }
 
-  setLatLongApi({String? lat, String? long, String? city, String? address} ) async{
+  setLatLongApi(
+      {String? lat, String? long, String? city, String? address}) async {
     var headers = {
       'Cookie': 'ci_session=f02741f77bb53eeaf1a6be0a045cb6f11b68f1a6'
     };
     var request =
-    http.MultipartRequest('POST', Uri.parse('${baseUrl}update_location'));
-    request.fields
-        .addAll({'address': address ?? '', 'city': city ??'', 'latitude': lat ?? '', 'longitude': long ?? '', 'user_id': '${CUR_USERID}'});
+        http.MultipartRequest('POST', Uri.parse('${baseUrl}update_location'));
+    request.fields.addAll({
+      'address': address ?? '',
+      'city': city ?? '',
+      'latitude': lat ?? '',
+      'longitude': long ?? '',
+      'user_id': '${CUR_USERID}'
+    });
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
 
@@ -1210,7 +1210,7 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
     } else {
-    print(response.reasonPhrase);
+      print(response.reasonPhrase);
     }
   }
 
@@ -1278,10 +1278,15 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                                       )
                                     : model.itemList![0].status == "processed"
                                         ? Text("Preparing")
-                                        : model.itemList![0].status == "" ? SizedBox() : Text(
-                                            capitalize(model.itemList![0].status.toString()),
-                                            style: const TextStyle(color: white),
-                                          ),
+                                        : model.itemList![0].status == ""
+                                            ? SizedBox()
+                                            : Text(
+                                                capitalize(model
+                                                    .itemList![0].status
+                                                    .toString()),
+                                                style: const TextStyle(
+                                                    color: white),
+                                              ),
                               ),
                             ],
                           ),
@@ -1298,7 +1303,8 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                                     const Icon(Icons.person, size: 14),
                                     Expanded(
                                       child: Text(
-                                        model.name != null && model.name!.isNotEmpty
+                                        model.name != null &&
+                                                model.name!.isNotEmpty
                                             ? " ${capitalize(model.name!)}"
                                             : " ",
                                         maxLines: 1,
@@ -1308,26 +1314,29 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                                   ],
                                 ),
                               ),
-                              model.itemList?[0].status == 'delivered' ? SizedBox():  InkWell(
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.call,
-                                      size: 14,
-                                      color: fontColor,
+                              model.itemList?[0].status == 'delivered'
+                                  ? SizedBox()
+                                  : InkWell(
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.call,
+                                            size: 14,
+                                            color: fontColor,
+                                          ),
+                                          Text(
+                                            " ${model.mobile!}",
+                                            style: const TextStyle(
+                                                color: fontColor,
+                                                decoration:
+                                                    TextDecoration.underline),
+                                          ),
+                                        ],
+                                      ),
+                                      onTap: () {
+                                        _launchCaller(index);
+                                      },
                                     ),
-                                Text(
-                                      " ${model.mobile!}",
-                                      style: const TextStyle(
-                                          color: fontColor,
-                                          decoration: TextDecoration.underline),
-                                    ),
-                                  ],
-                                ),
-                                onTap: () {
-                                  _launchCaller(index);
-                                },
-                              ),
                             ],
                           ),
                         ),
@@ -1339,7 +1348,8 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                               Row(
                                 children: [
                                   const Icon(Icons.money, size: 14),
-                                  Text("Payable: ${CUR_CURRENCY!} ${model.payable!}"),
+                                  Text(
+                                      "Payable: ${CUR_CURRENCY!} ${model.payable!}"),
                                 ],
                               ),
                               Spacer(),
@@ -1372,80 +1382,100 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                             ],
                           ),
                         ),
-                        model.itemList?[0].status == 'canceled' ? SizedBox()  :   model.itemList![0].accept_reject_driver == "0" && model.itemList?[0].status != 'canceled' && model.itemList?[0].status != 'delivered'
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  MaterialButton(
-                                    minWidth:
-                                        MediaQuery.of(context).size.width / 2.5,
-                                    shape: RoundedRectangleBorder(),
-                                    onPressed: () {
-                                      updateOrderStatus("1", "${model.id}");
-                                    },
-                                    child: Text(
-                                      "Accept",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    color: Colors.green,
-                                  ),
-                                  MaterialButton(
-                                    minWidth:
-                                        MediaQuery.of(context).size.width / 2.5,
-                                    onPressed: () {
-                                      updateOrderStatus("2", "${model.id}");
-                                    },
-                                    child: Text(
-                                      "Reject",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    color: Colors.red,
-                                  ),
-                                ],
-                              )
-                            :model.itemList?[0].status == 'delivered' ? SizedBox() :
-                        model.itemList![0].accept_reject_driver == "1"
-                                ? MaterialButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Accepted",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    color: Colors.green,
-                                    minWidth: MediaQuery.of(context).size.width,
+                        model.itemList?[0].status == 'canceled'
+                            ? SizedBox()
+                            : model.itemList![0].accept_reject_driver == "0" &&
+                                    model.itemList?[0].status != 'canceled' &&
+                                    model.itemList?[0].status != 'delivered'
+                                ? Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      MaterialButton(
+                                        minWidth:
+                                            MediaQuery.of(context).size.width /
+                                                2.5,
+                                        shape: RoundedRectangleBorder(),
+                                        onPressed: () {
+                                          updateOrderStatus("1", "${model.id}");
+                                        },
+                                        child: Text(
+                                          "Accept",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        color: Colors.green,
+                                      ),
+                                      MaterialButton(
+                                        minWidth:
+                                            MediaQuery.of(context).size.width /
+                                                2.5,
+                                        onPressed: () {
+                                          updateOrderStatus("2", "${model.id}");
+                                        },
+                                        child: Text(
+                                          "Reject",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        color: Colors.red,
+                                      ),
+                                    ],
                                   )
-                                : model.itemList![0].accept_reject_driver == "2" ? MaterialButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Rejected",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    color: Colors.red,
-                                    minWidth: MediaQuery.of(context).size.width,
-                                  ) : MaterialButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Delivered",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          color: Colors.green,
-                          minWidth: MediaQuery.of(context).size.width,
-                        )
+                                : model.itemList?[0].status == 'delivered'
+                                    ? SizedBox()
+                                    : model.itemList![0].accept_reject_driver ==
+                                            "1"
+                                        ? MaterialButton(
+                                            onPressed: () {},
+                                            child: Text(
+                                              "Accepted",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            color: Colors.green,
+                                            minWidth: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                          )
+                                        : model.itemList![0]
+                                                    .accept_reject_driver ==
+                                                "2"
+                                            ? MaterialButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "Rejected",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                color: Colors.red,
+                                                minWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                              )
+                                            : MaterialButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "Delivered",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                color: Colors.green,
+                                                minWidth: MediaQuery.of(context)
+                                                    .size.width,
+                                              )
 
                         // model.deliveryTime != "" ? Padding(
                         //   padding:
@@ -1458,23 +1488,25 @@ class StateHome extends State<Home> with TickerProviderStateMixin {
                         //   ),
                         // ) : SizedBox(),
                       ])),
-              onTap: model.itemList![0].accept_reject_driver == "1" ?  () async {
-              var isResult =   await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          OrderDetail(model: orderList[index])),
-                ).then((value) => getOrder());
-                setState(() {
-                  /* _isLoading = true;
+              onTap: model.itemList![0].accept_reject_driver == "1"
+                  ? () async {
+                      var isResult = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                OrderDetail(model: orderList[index])),
+                      ).then((value) => getOrder());
+                      setState(() {
+                        /* _isLoading = true;
              total=0;
              offset=0;
 orderList.clear();*/
-                  getUserDetail();
-                  getOrder();
-                });
-                // getOrder();
-              } : () {},
+                        getUserDetail();
+                        getOrder();
+                      });
+                      // getOrder();
+                    }
+                  : () {},
             ),
           )
         : Container();
@@ -1520,8 +1552,6 @@ orderList.clear();*/
                 )),
           ),
         ),
-
-
       ],
     );
   }

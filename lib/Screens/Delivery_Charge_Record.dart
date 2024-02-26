@@ -28,7 +28,7 @@ class _AllDeliveryChargeState extends State<AllDeliveryCharge> {
       };
       var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}get_delivery_boy_details'));
       request.fields.addAll({
-        'id': '${CUR_USERID}'
+        'id': '$CUR_USERID'
       });
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
@@ -51,8 +51,8 @@ class _AllDeliveryChargeState extends State<AllDeliveryCharge> {
     };
     var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}get_delivery_charge_report'));
     request.fields.addAll({
-      'user_id': '${CUR_USERID}',
-      "city":"${city}"
+      'user_id': '$CUR_USERID',
+      "city":"$city"
     });
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
