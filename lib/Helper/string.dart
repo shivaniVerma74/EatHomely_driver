@@ -183,14 +183,11 @@ const String PLACED = 'received';
 const String SHIPED = 'Food Picked up';
 const String PROCESSED = 'processed';
 const String DELIVERD = 'delivered';
-const String PAYMENT_COMPLETED = 'payment_complete';
+const String PAYMENT_COMPLETED = 'Payment Complete';
 const String CANCLED = 'cancelled';
 const String RETURNED = 'returned';
 const String ITEM_RETURN = 'Item Return';
 const String ITEM_CANCEL = 'Item Cancel';
-
-
-
 const String ADD_ID = 'address_id';
 const String STYLE = 'style';
 const String ORDERITEMID='order_item_id';

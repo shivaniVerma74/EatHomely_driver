@@ -79,10 +79,30 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
     for (int i = 0; i < widget.model!.itemList!.length; i++) {
       widget.model!.itemList![i].curSelected =
           widget.model!.itemList![i].status;
+      print("======innnnnnnnnnn=========${widget.model!.itemList![i].status}===========");
+      print("thiss issssssss ${widget.model!.itemList![i].curSelected}===========");
     }
 
     if (widget.model!.payMethod == "Bank Transfer") {
       statusList.removeWhere((element) => element == PLACED);
+    }
+
+    if(widget.model!.itemList![0].status=="food ready for pickup"){
+      statusList.clear();
+      statusList.add(DELIVERD);
+      //statusList2.add(PAYMENTCOMPLETE);
+    }
+    print("-------- ----------- ${widget.model!.itemList![0]}");
+    if(widget.model!.itemList![0].status==PAYMENT_COMPLETED){
+      statusList.clear();
+      //  statusList2.add(DELIVERD);
+      //   statusList2.add(PAYMENTCOMPLETE);
+    }
+
+    if(widget.model!.itemList![0].status==DELIVERD){
+      statusList.clear();
+      //    statusList2.add(DELIVERD);
+      statusList.add(PAYMENT_COMPLETED);
     }
 
     buttonController = AnimationController(
@@ -95,8 +115,9 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
       curve: const Interval(
         0.0,
         0.150,
+        ),
       ),
-    ));
+    );
   }
 
   bool finalDeliver = false;
@@ -351,8 +372,8 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                   const EdgeInsets.symmetric(
                                       vertical: 10.0,
                                       horizontal: 10),
-                                  child: widget.model!.itemList![0].status == "payment_complete" ? Text("Payment Complete", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),):
-                                     widget.model!.itemList![0].status != DELIVERD &&
+                                  child: widget.model!.itemList![0].status == "Payment Complete" ? Text("Payment Complete", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),):
+                                     // widget.model!.itemList![0].status != DELIVERD &&
                                       widget.model!.itemList![0].status != "cancelled"
                                       ? Row(
                                     children: [
@@ -410,7 +431,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                                       .textTheme
                                                       .subtitle2!
                                                       .copyWith(color: fontColor, fontWeight: FontWeight.bold),
-                                                )
+                                                      )
                                                     : st == "processed"
                                                     ? Text(
                                                   "Preparing",
@@ -445,17 +466,17 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                                 widget.model!.otp,
                                                 model.id, true, 0);
                                           }
-                                           else {
-                                            if(widget.model!.itemList![0].curSelected?.toLowerCase() == widget.model!.itemList![0].status?.toLowerCase()) {
-                                              Fluttertoast.showToast(msg: 'choose different status');
-                                            }
+                                           // else {
+                                           //  if(widget.model!.itemList![0].curSelected?.toLowerCase() == widget.model!.itemList![0].status?.toLowerCase()) {
+                                           //    Fluttertoast.showToast(msg: 'choose different status');
+                                           //  }
                                           else {
                                           updateOrder(
                                           widget.model!.itemList![0].curSelected,
                                           model.id, true, 0,
                                           widget.model!.itemList![0].item_otp);
                                               }
-                                           }
+                                           // }
                                         },
                                         elevation: 2.0,
                                         fillColor: fontColor,
@@ -466,21 +487,22 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                             Icons.send,
                                             size: 20,
                                             color: white,
-                                          ),
-                                        ),
-                                        shape: const CircleBorder(),
-                                          ),
-                                        ],
-                                      )
+                                              ),
+                                           ),
+                                          shape: const CircleBorder(),
+                                               ),
+                                           ],
+                                        )
                                       : widget.model!.itemList![0].status != "cancelled"
                                       ? Text(
-                                    "DELIVERED",
-                                    style: TextStyle(color: primary),
-                                    )
-                                      : Text(
                                     "CANCELLED",
                                     style: TextStyle(color: primary),
-                                  ),
+                                    )
+                                      : SizedBox.shrink()
+                                  //     Text(
+                                  //   "CANCELLED",
+                                  //   style: TextStyle(color: primary),
+                                  // ),
                                 )
                                 //     : Container(),
                                 // widget.model!.itemList![0].curSelected ==
@@ -526,7 +548,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                                 //                 color: primary,
                                 //               )
                                 //             ],
-                                //           )
+                                //           )F
                                     : SizedBox()
                               ],
                             ),
@@ -853,7 +875,7 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                             .textTheme
                             .button!
                             .copyWith(color: lightBlack2)),
-                    Text("+ ${CUR_CURRENCY!} ${double.parse(widget.model!.total_gst.toString()).toStringAsFixed(2)}",
+                    Text("+ ${CUR_CURRENCY!} ${double.parse(widget.model!.igst.toString()).toStringAsFixed(2)}",
                         style: Theme.of(context)
                             .textTheme
                             .button!
@@ -884,16 +906,30 @@ class StateOrder extends State<OrderDetail> with TickerProviderStateMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Text("Packaging Charge :",
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(color: lightBlack2),
+                    ),
+                    Text(" ${CUR_CURRENCY!} ${double.parse(widget.model!.totalPackingCharge.toString()).toStringAsFixed(2)}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(color: lightBlack2),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Text("$WALLET_BAL :",
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: lightBlack2)),
+                        style: Theme.of(context).textTheme.button!.copyWith(color: lightBlack2)),
                     Text("- ${CUR_CURRENCY!} ${double.parse(widget.model!.walBal.toString()).toStringAsFixed(2)}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: lightBlack2))
+                        style: Theme.of(context).textTheme.button!.copyWith(color: lightBlack2))
                   ],
                 ),
               ),
